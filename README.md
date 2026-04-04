@@ -80,3 +80,7 @@ The application features a secure architecture and a responsive user interface, 
 - Clicking "Delete" prompts a confirmation and then permanently removes the content from public view.
 
 ## Wireframe Diagrams
+
+- ![State 1: The Login View](Assets/wireframe-state-1.png)
+- ![State 2: The Registation View](Assets/wireframe-state-2.png)
+- ![State 3: The Dashboard View (The Forum Phase)](Assets/wireframe-state-3.png)
