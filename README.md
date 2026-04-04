@@ -81,6 +81,7 @@ The application features a secure architecture and a responsive user interface, 
 
 ## Wireframe Diagrams
 
-- ![State 1: The Login View](Assets/wireframe-state-1.png)
-- ![State 2: The Registation View](Assets/wireframe-state-2.png)
-- ![State 3: The Dashboard View (The Forum Phase)](Assets/wireframe-state-3.png)
+- ![State 1: The Logged-Out State(Login/Register View))](Assets/wireframe-state-1.png)
+- ![State 2: The Authentication Error State](Assets/wireframe-state-2.png)
+- ![State 3: The Dashboard Empty State(After Login)](Assets/wireframe-state-3.png)
+- ![State 4: The Category Active State(After Clicking a League, the forum)](Assets/wireframe-state-4.png)
