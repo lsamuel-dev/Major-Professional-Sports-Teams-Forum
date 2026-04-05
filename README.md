@@ -85,3 +85,4 @@ The application features a secure architecture and a responsive user interface, 
 - ![State 2: The Authentication Error State (Registration View)](Assets/wireframe-state-2.png)
 - ![State 3: The Dashboard Empty State(After Login)](Assets/wireframe-state-3.png)
 - ![State 4: The Category Active State(After Clicking a League, the forum)](Assets/wireframe-state-4.png)
+- ![State 5: The New Question State(After Clicking Ask A New Question)](Assets/wireframe-state-5.png)
