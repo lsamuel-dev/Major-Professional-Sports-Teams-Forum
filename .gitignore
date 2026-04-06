@@ -1,0 +1,12 @@
+# Dependencies
+node_modules/
+
+# Environment variables (Crucial for security!)
+.env
+
+# Logs
+npm-debug.log*
+
+# Editor specific files
+.DS_Store
+.vscode/
