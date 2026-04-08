@@ -1,17 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from '../App'; // Note: No extension needed if capitalized correctly
+import App from './App'; 
 import './App.css';
 
 const rootElement = document.getElementById('root');
+const root = ReactDOM.createRoot(rootElement);
 
-if (!rootElement) {
-    console.error("Failed to find the root element.");
-} else {
-    const root = ReactDOM.createRoot(rootElement);
-    root.render(
-      <React.StrictMode>
-        <App />
-      </React.StrictMode>
-    );
-}
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);

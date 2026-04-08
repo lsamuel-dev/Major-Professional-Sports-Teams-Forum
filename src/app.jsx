@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import TeamList from '../TeamList/TeamList';
-import ForumThread from '../ForumThread/ForumThread';
+import TeamList from './components/TeamList/TeamList'; // Fixed path
+import ForumThread from './components/ForumThread/ForumThread'; // Fixed path
 
 function App() {
   const [teams, setTeams] = useState([]);
@@ -67,7 +67,7 @@ function App() {
         top: 0,
         zIndex: 100
       }}>
-        <h1 style={{ margin: 0, letterSpacing: '2px' }}>MAJOR SPORTS FORUM</h1>
+        <h1 style={{ margin: 0, letterSpacing: '2px' }}>MAJOR PROFESSIONAL SPORTS TEAMS FORUM</h1>
       </header>
       
       <main style={{ padding: '20px', minHeight: '80vh' }}>

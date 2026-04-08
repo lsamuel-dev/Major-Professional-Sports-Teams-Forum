@@ -1,5 +1,5 @@
 import React from 'react';
-import TeamCard from './TeamCard/TeamCard';
+import TeamCard from '../TeamCard/TeamCard';
 import './TeamList.css';
 
 function TeamList({ teams, onSelectTeam }) {
