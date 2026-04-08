@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import TeamList from '../Components/TeamList/TeamList';
-import ForumThread from '../Components/ForumThread/ForumThread';
+import TeamList from '../TeamList/TeamList';
+import ForumThread from '../ForumThread/ForumThread';
 
 function App() {
   const [teams, setTeams] = useState([]);
