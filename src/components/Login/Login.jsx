@@ -15,7 +15,8 @@ function Login({ onLogin }) {
     <div className="login-page">
       <div className="login-card">
         <header className="login-header">
-          <h1>MEMBER ACCESS</h1>
+          <h1>MAJOR PRO SPORTS TEAMS FORUM</h1>
+          <h2>Member Secure Access</h2>
         </header>
         
         <form className="login-form" onSubmit={handleSubmit}>

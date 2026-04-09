@@ -45,8 +45,7 @@ function ForumThread({ team, comments, onBack, onAddComment, onDeleteComment }) 
         <form onSubmit={handleSubmit} className="comment-form">
           <textarea 
             name="comment" 
-            placeholder="Share your thoughts on the game..."
-            required
+            placeholder="Share your thoughts..." required
           ></textarea>
           <button type="submit">Post to Thread</button>
         </form>
