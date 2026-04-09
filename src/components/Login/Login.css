@@ -1,0 +1,94 @@
+/* login-page.css - Matching the aesthetic of image_0.png */
+
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f9f9f9; /* Subtle contrast to the card */
+  font-family: Arial, sans-serif;
+}
+
+.login-card {
+  background-color: #fff;
+  border: 4px solid #000; /* Solid, thick border matching the forum aesthetic */
+  width: 100%;
+  max-width: 450px;
+  box-shadow: 10px 10px 0px rgba(0,0,0,0.1); /* "Sharp" block shadow */
+}
+
+.login-header {
+  padding: 30px;
+  border-bottom: 3px solid #000;
+  text-align: center;
+}
+
+.login-header h1 {
+  margin: 0;
+  font-size: 1.8rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  font-weight: 900;
+}
+
+.login-form {
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.input-group label {
+  font-weight: bold;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+}
+
+.input-group input {
+  padding: 15px;
+  border: 2px solid #000; /* Matching input border */
+  font-size: 1rem;
+  border-radius: 0; /* Strict rectangular corners */
+}
+
+.input-group input:focus {
+  outline: none;
+  background-color: #f0f0f0;
+}
+
+.login-submit-btn {
+  margin-top: 15px;
+  padding: 18px;
+  background-color: #000;
+  color: #fff;
+  border: none;
+  font-size: 1rem;
+  font-weight: bold;
+  letter-spacing: 2px;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: background-color 0.2s;
+}
+
+.login-submit-btn:hover {
+  background-color: #333; /* Dark gray hover */
+}
+
+.login-footer {
+  padding: 20px;
+  border-top: 1px solid #eee;
+  text-align: center;
+  background-color: #fafafa;
+}
+
+.login-footer p {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #666;
+}

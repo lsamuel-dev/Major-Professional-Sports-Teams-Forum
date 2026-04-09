@@ -12,20 +12,39 @@ function Login({ onLogin }) {
   };
 
   return (
-    <div className="login-container">
-      <form className="login-form" onSubmit={handleSubmit}>
-        <h2>Major Professional Sports Teams Forum</h2>
-        <h3>Member Login</h3>
-        <input 
-          type="text" 
-          placeholder="Enter Username" 
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          required 
-        />
-        <input type="password" placeholder="Password" required />
-        <button type="submit">Login</button>
-      </form>
+    <div className="login-page">
+      <div className="login-card">
+        <header className="login-header">
+          <h1>MEMBER ACCESS</h1>
+        </header>
+        
+        <form className="login-form" onSubmit={handleSubmit}>
+          <div className="input-group">
+            <label htmlFor="username">USERNAME</label>
+            <input 
+              id="username"
+              type="text" 
+              placeholder="Case-Sensitive" 
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required 
+            />
+          </div>
+
+          <div className="input-group">
+            <label htmlFor="password">PASSWORD</label>
+            <input id="password" type="password" placeholder="Min. 8 characters" required />
+          </div>
+
+          <button type="submit" className="login-submit-btn">
+            SUBMIT CREDENTIALS
+          </button>
+        </form>
+
+        <footer className="login-footer">
+          <p>This is a secure gateway. Unauthorized access is prohibited.</p>
+        </footer>
+      </div>
     </div>
   );
 }
