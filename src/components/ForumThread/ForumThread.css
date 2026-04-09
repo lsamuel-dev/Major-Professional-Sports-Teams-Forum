@@ -1,0 +1,73 @@
+.forum-thread {
+  max-width: 800px;
+  margin: 0 auto;
+  background: #f9f9f9;
+  padding: 20px;
+  border: 2px solid #000;
+}
+
+.back-button {
+  background: #000;
+  color: #fff;
+  padding: 8px 15px;
+  border: none;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.forum-header {
+  text-align: center;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 20px;
+}
+
+.forum-logo {
+  width: 120px;
+}
+
+.comment-list {
+  margin: 20px 0;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.comment-card {
+  background: #fff;
+  padding: 15px;
+  border-left: 5px solid #000;
+  margin-bottom: 10px;
+  box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+}
+
+.comment-form textarea {
+  width: 100%;
+  height: 80px;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+}
+
+.comment-form button {
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.delete-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  color: #ff4d4d;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.delete-btn:hover {
+  text-decoration: underline;
+}

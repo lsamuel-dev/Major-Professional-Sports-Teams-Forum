@@ -5,7 +5,7 @@ import './TeamList.css';
 function TeamList({ teams, onSelectTeam }) {
   return (
     <div className="team-list-container">
-      <h2>Select a Team</h2>
+      <h2 style={{ textAlign: 'center', marginBottom: '20px' }}>Select a Team</h2>
       <div className="team-grid">
         {teams.map(team => (
           <TeamCard 
