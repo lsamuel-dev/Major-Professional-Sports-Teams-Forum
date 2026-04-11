@@ -9,18 +9,18 @@ function App() {
   const [selectedTeam, setSelectedTeam] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // 1. Initialize user from LocalStorage
+  // 1. Initialize user session from LocalStorage
   const [user, setUser] = useState(() => {
     return localStorage.getItem('forum_user') || null;
   });
 
-  // 2. Initialize comments from LocalStorage
+  // 2. Initialize all forum comments from LocalStorage
   const [allComments, setAllComments] = useState(() => {
     const saved = localStorage.getItem('forum_comments');
     return saved ? JSON.parse(saved) : {};
   });
 
-  // 3. PERSISTENCE: Save User whenever it changes
+  // 3. PERSISTENCE: Sync User session to LocalStorage
   useEffect(() => {
     if (user) {
       localStorage.setItem('forum_user', user);
@@ -29,12 +29,12 @@ function App() {
     }
   }, [user]);
 
-  // 4. PERSISTENCE: Save Comments whenever they change
+  // 4. PERSISTENCE: Sync Comments to LocalStorage
   useEffect(() => {
     localStorage.setItem('forum_comments', JSON.stringify(allComments));
   }, [allComments]);
 
-  // 5. FETCH TEAMS: Existing API Logic
+  // 5. API FETCH: Get teams for NFL, NBA, MLB, and NHL
   useEffect(() => {
     const fetchLeagues = async () => {
       setLoading(true);
@@ -59,7 +59,7 @@ function App() {
 
         setTeams(combinedTeams);
       } catch (error) {
-        console.error("API Error:", error);
+        console.error("Critical API Error:", error);
       } finally {
         setLoading(false);
       }
@@ -68,14 +68,23 @@ function App() {
     fetchLeagues();
   }, []);
 
-  const addComment = (teamId, newComment) => {
+  // 6. CRUD: Add Comment with Author Tagging
+  const addComment = (teamId, commentText) => {
     const teamComments = allComments[teamId] || [];
+    const newComment = {
+      id: Date.now(),
+      text: commentText,
+      author: user, // Tags the post with the logged-in username
+      timestamp: new Date().toLocaleString()
+    };
+
     setAllComments({
       ...allComments,
-      [teamId]: [...teamComments, { id: Date.now(), ...newComment }]
+      [teamId]: [...teamComments, newComment]
     });
   };
 
+  // 7. CRUD: Delete Comment
   const deleteComment = (teamId, commentId) => {
     const teamComments = allComments[teamId] || [];
     setAllComments({
@@ -102,21 +111,24 @@ function App() {
             justifyContent: 'space-between',
             alignItems: 'center'
           }}>
-            <div style={{ width: '100px' }}></div> {/* Spacer for layout balance */}
-            <h1 style={{ margin: 0, letterSpacing: '2px', fontSize: '1.5rem' }}>
+            <div style={{ width: '100px' }}></div> 
+            <h1 style={{ margin: 0, letterSpacing: '2px', fontSize: '1.2rem' }}>
               MAJOR PROFESSIONAL SPORTS TEAMS FORUM
             </h1>
             <div className="user-controls" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-              <span style={{ fontWeight: 'bold', textTransform: 'uppercase' }}>User: {user}</span>
+              <span style={{ fontWeight: 'bold', textTransform: 'uppercase', fontSize: '0.9rem' }}>
+                ID: {user}
+              </span>
               <button 
                 onClick={() => setUser(null)}
                 style={{
-                  padding: '5px 15px',
+                  padding: '5px 12px',
                   backgroundColor: '#000',
                   color: '#fff',
                   border: 'none',
                   cursor: 'pointer',
-                  fontWeight: 'bold'
+                  fontWeight: 'bold',
+                  fontSize: '0.8rem'
                 }}
               >
                 LOGOUT
@@ -127,7 +139,7 @@ function App() {
           <main style={{ padding: '20px', minHeight: '80vh' }}>
             {loading ? (
               <div style={{ textAlign: 'center', marginTop: '50px', fontWeight: 'bold' }}>
-                SCUTTLING THE DATABASE... FETCHING TEAMS...
+                CONNECTING TO THE SPORTS DATABASE...
               </div>
             ) : !selectedTeam ? (
               <TeamList 
@@ -137,9 +149,10 @@ function App() {
             ) : (
               <ForumThread 
                 team={selectedTeam} 
+                currentUser={user} // Passes the logged-in user for the Delete check
                 comments={allComments[selectedTeam.id] || []} 
                 onBack={() => setSelectedTeam(null)}
-                onAddComment={(comment) => addComment(selectedTeam.id, comment)}
+                onAddComment={(text) => addComment(selectedTeam.id, text)}
                 onDeleteComment={(commentId) => deleteComment(selectedTeam.id, commentId)}
               />
             )}

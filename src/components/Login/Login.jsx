@@ -2,12 +2,34 @@ import React, { useState } from 'react';
 import './Login.css';
 
 function Login({ onLogin }) {
+  const [isRegistering, setIsRegistering] = useState(false);
   const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleAuth = (e) => {
     e.preventDefault();
-    if (username.trim()) {
-      onLogin(username);
+    setError('');
+
+    // Get the "User Database" from LocalStorage
+    const users = JSON.parse(localStorage.getItem('forum_users') || '{}');
+
+    if (isRegistering) {
+      if (users[username]) {
+        setError('USERNAME ALREADY EXISTS');
+      } else {
+        // Register the new user
+        users[username] = password;
+        localStorage.setItem('forum_users', JSON.stringify(users));
+        onLogin(username);
+      }
+    } else {
+      // Login attempt
+      if (users[username] && users[username] === password) {
+        onLogin(username);
+      } else {
+        setError('INVALID CREDENTIALS');
+      }
     }
   };
 
@@ -15,17 +37,16 @@ function Login({ onLogin }) {
     <div className="login-page">
       <div className="login-card">
         <header className="login-header">
-          <h1>MAJOR PRO SPORTS TEAMS FORUM</h1>
-          <h2>Member Secure Access</h2>
+          <h1>{isRegistering ? 'CREATE ACCOUNT' : 'MEMBER ACCESS'}</h1>
         </header>
         
-        <form className="login-form" onSubmit={handleSubmit}>
+        <form className="login-form" onSubmit={handleAuth}>
+          {error && <div style={{ color: 'red', fontWeight: 'bold', textAlign: 'center' }}>{error}</div>}
+          
           <div className="input-group">
-            <label htmlFor="username">USERNAME</label>
+            <label>USERNAME</label>
             <input 
-              id="username"
               type="text" 
-              placeholder="Case-Sensitive" 
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required 
@@ -33,17 +54,24 @@ function Login({ onLogin }) {
           </div>
 
           <div className="input-group">
-            <label htmlFor="password">PASSWORD</label>
-            <input id="password" type="password" placeholder="Min. 8 characters" required />
+            <label>PASSWORD</label>
+            <input 
+              type="password" 
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required 
+            />
           </div>
 
           <button type="submit" className="login-submit-btn">
-            SUBMIT CREDENTIALS
+            {isRegistering ? 'REGISTER' : 'LOGIN'}
           </button>
         </form>
 
         <footer className="login-footer">
-          <p>This is a secure gateway. Unauthorized access is prohibited.</p>
+          <p onClick={() => setIsRegistering(!isRegistering)} style={{ cursor: 'pointer', textDecoration: 'underline' }}>
+            {isRegistering ? 'ALREADY HAVE AN ACCOUNT? LOGIN' : 'NEED AN ACCOUNT? SIGN UP'}
+          </p>
         </footer>
       </div>
     </div>
