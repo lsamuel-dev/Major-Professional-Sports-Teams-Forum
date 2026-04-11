@@ -45,76 +45,85 @@ function ForumThread({ team, comments, onBack, onAddComment, onDeleteComment, cu
             No posts yet. Be the first to break the ice!
           </p>
         ) : (
-          comments.map((comment) => (
-            <div key={comment.id} className="comment-card" style={{
-              border: '3px solid #000',
-              margin: '20px 0',
-              padding: '20px',
-              backgroundColor: '#fff',
-              boxShadow: '5px 5px 0px rgba(0,0,0,0.1)'
-            }}>
-              <div className="comment-meta" style={{ 
-                display: 'flex', 
-                justifyContent: 'space-between', 
-                alignItems: 'center',
-                marginBottom: '15px',
-                borderBottom: '1px solid #eee',
-                paddingBottom: '10px'
+          comments.map((comment) => {
+            // FIX: Normalize the IDs/Authors for comparison
+            // This checks if author is a string or an object, and handles both .id and ._id
+            const commentAuthor = comment.author?._id || comment.author?.id || comment.author;
+            const currentUserId = currentUser?._id || currentUser?.id || currentUser;
+            const isOwner = commentAuthor === currentUserId;
+
+            return (
+              <div key={comment.id || comment._id} className="comment-card" style={{
+                border: '3px solid #000',
+                margin: '20px 0',
+                padding: '20px',
+                backgroundColor: '#fff',
+                boxShadow: '5px 5px 0px rgba(0,0,0,0.1)'
               }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  <span style={{ 
-                    fontWeight: '900', 
-                    textTransform: 'uppercase', 
-                    letterSpacing: '1px',
-                    fontSize: '1rem'
-                  }}>
-                    {comment.author}
-                  </span>
-                  {currentUser === comment.author && (
+                <div className="comment-meta" style={{ 
+                  display: 'flex', 
+                  justifyContent: 'space-between', 
+                  alignItems: 'center',
+                  marginBottom: '15px',
+                  borderBottom: '1px solid #eee',
+                  paddingBottom: '10px'
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                     <span style={{ 
-                      fontSize: '0.6rem', 
-                      backgroundColor: '#000', 
-                      color: '#fff', 
-                      padding: '2px 6px', 
-                      fontWeight: 'bold' 
+                      fontWeight: '900', 
+                      textTransform: 'uppercase', 
+                      letterSpacing: '1px',
+                      fontSize: '1rem'
                     }}>
-                      YOU
+                      {/* Show username if author is an object, otherwise show the string */}
+                      {comment.author?.username || comment.author}
                     </span>
-                  )}
+                    {isOwner && (
+                      <span style={{ 
+                        fontSize: '0.6rem', 
+                        backgroundColor: '#000', 
+                        color: '#fff', 
+                        padding: '2px 6px', 
+                        fontWeight: 'bold' 
+                      }}>
+                        YOU
+                      </span>
+                    )}
+                  </div>
+                  
+                  <span style={{ fontSize: '0.75rem', color: '#888', fontStyle: 'italic' }}>
+                    {comment.timestamp}
+                  </span>
                 </div>
                 
-                <span style={{ fontSize: '0.75rem', color: '#888', fontStyle: 'italic' }}>
-                  {comment.timestamp}
-                </span>
-              </div>
-              
-              <p style={{ fontSize: '1.1rem', lineHeight: '1.5', margin: '15px 0' }}>
-                {comment.text}
-              </p>
+                <p style={{ fontSize: '1.1rem', lineHeight: '1.5', margin: '15px 0' }}>
+                  {comment.text}
+                </p>
 
-              {/* AUTHORIZATION CHECK */}
-              {currentUser === comment.author && (
-                <div style={{ textAlign: 'right' }}>
-                  <button 
-                    onClick={() => onDeleteComment(comment.id)}
-                    style={{
-                      backgroundColor: '#ff4444',
-                      color: '#fff',
-                      border: '2px solid #000',
-                      padding: '8px 15px',
-                      cursor: 'pointer',
-                      fontSize: '0.75rem',
-                      fontWeight: 'bold',
-                      textTransform: 'uppercase',
-                      boxShadow: '3px 3px 0px #000'
-                    }}
-                  >
-                    DELETE MY POST
-                  </button>
-                </div>
-              )}
-            </div>
-          ))
+                {/* UPDATED AUTHORIZATION CHECK */}
+                {isOwner && (
+                  <div style={{ textAlign: 'right' }}>
+                    <button 
+                      onClick={() => onDeleteComment(comment.id || comment._id)}
+                      style={{
+                        backgroundColor: '#ff4444',
+                        color: '#fff',
+                        border: '2px solid #000',
+                        padding: '8px 15px',
+                        cursor: 'pointer',
+                        fontSize: '0.75rem',
+                        fontWeight: 'bold',
+                        textTransform: 'uppercase',
+                        boxShadow: '3px 3px 0px #000'
+                      }}
+                    >
+                      DELETE MY POST
+                    </button>
+                  </div>
+                )}
+              </div>
+            );
+          })
         )}
       </div>
 
@@ -129,7 +138,7 @@ function ForumThread({ team, comments, onBack, onAddComment, onDeleteComment, cu
         <textarea
           value={newComment}
           onChange={(e) => setNewComment(e.target.value)}
-          placeholder={`What's on your mind, ${currentUser}?`}
+          placeholder={`What's on your mind, ${currentUser?.username || currentUser}?`}
           style={{ 
             width: '100%', 
             minHeight: '120px', 
