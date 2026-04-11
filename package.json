@@ -4,11 +4,13 @@
   "description": "Major-Profeesional-Sports-Teams-Forum",
   "main": "index.js",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
+  "dev": "vite",
+  "build": "vite build",
+  "lint": "eslint .",
+  "preview": "vite preview",
+  "predeploy": "npm run build",
+  "deploy": "gh-pages -d dist"
+},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/lsamuel-dev/Major-Professional-Sports-Teams-Forum.git"
@@ -19,7 +21,7 @@
   "bugs": {
     "url": "https://github.com/lsamuel-dev/Major-Professional-Sports-Teams-Forum/issues"
   },
-    "dependencies": {
+  "dependencies": {
     "bcryptjs": "^3.0.3",
     "cors": "^2.8.6",
     "dotenv": "^17.4.1",
@@ -41,5 +43,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "gh-pages": "^6.3.0"
   }
 }
