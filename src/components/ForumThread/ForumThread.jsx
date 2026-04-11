@@ -1,7 +1,14 @@
 import React, { useState } from 'react';
 
-function ForumThread({ team, comments, onBack, onAddComment, onDeleteComment, currentUser }) {
+function ForumThread({ team, comments = [], onBack, onAddComment, onDeleteComment, currentUser }) {
   const [newComment, setNewComment] = useState('');
+
+  // Helper to safely get a string name from a user string or object
+  const getSafeName = (user) => {
+    if (!user) return "User";
+    if (typeof user === 'string') return user;
+    return user.username || user.name || "User";
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -10,6 +17,11 @@ function ForumThread({ team, comments, onBack, onAddComment, onDeleteComment, cu
       setNewComment('');
     }
   };
+
+  // Strict safety check for the team object
+  if (!team || !team.name) return <div style={{ padding: '20px' }}>Loading forum data...</div>;
+
+  const currentUserName = getSafeName(currentUser);
 
   return (
     <div className="forum-thread" style={{ maxWidth: '800px', margin: '0 auto' }}>
@@ -35,8 +47,10 @@ function ForumThread({ team, comments, onBack, onAddComment, onDeleteComment, cu
         borderBottom: '4px solid #000',
         paddingBottom: '20px'
       }}>
-        <img src={team.badge} alt={team.name} style={{ width: '80px' }} />
-        <h1 style={{ margin: 0, letterSpacing: '1px' }}>{team.name.toUpperCase()} FAN FORUM</h1>
+        {team.badge && <img src={team.badge} alt={team.name} style={{ width: '80px' }} />}
+        <h1 style={{ margin: 0, letterSpacing: '1px' }}>
+          {(team.name || "TEAM").toUpperCase()} FAN FORUM
+        </h1>
       </div>
 
       <div className="comments-section">
@@ -45,15 +59,24 @@ function ForumThread({ team, comments, onBack, onAddComment, onDeleteComment, cu
             No posts yet. Be the first to break the ice!
           </p>
         ) : (
-          comments.map((comment) => {
-            // FIX: Normalize the IDs/Authors for comparison
-            // This checks if author is a string or an object, and handles both .id and ._id
-            const commentAuthor = comment.author?._id || comment.author?.id || comment.author;
-            const currentUserId = currentUser?._id || currentUser?.id || currentUser;
-            const isOwner = commentAuthor === currentUserId;
+          comments.map((comment, index) => {
+            // 1. Get a clean string for the author's name
+            const authorName = getSafeName(comment.author);
+            
+            // 2. Normalize for the ownership check (Lowercase + Trim)
+            const commentAuthLower = authorName.toLowerCase().trim();
+            const currentAuthLower = currentUserName.toLowerCase().trim();
+            
+            // 3. Normalize IDs as strings
+            const commentId = (comment.author?._id || comment.author?.id || "").toString();
+            const currentId = (currentUser?._id || currentUser?.id || "").toString();
+
+            // Match by name OR match by ID
+            const isOwner = (commentAuthLower === currentAuthLower && commentAuthLower !== "user") || 
+                            (commentId !== "" && commentId === currentId);
 
             return (
-              <div key={comment.id || comment._id} className="comment-card" style={{
+              <div key={comment._id || comment.id || index} className="comment-card" style={{
                 border: '3px solid #000',
                 margin: '20px 0',
                 padding: '20px',
@@ -75,8 +98,7 @@ function ForumThread({ team, comments, onBack, onAddComment, onDeleteComment, cu
                       letterSpacing: '1px',
                       fontSize: '1rem'
                     }}>
-                      {/* Show username if author is an object, otherwise show the string */}
-                      {comment.author?.username || comment.author}
+                      {authorName}
                     </span>
                     {isOwner && (
                       <span style={{ 
@@ -100,11 +122,10 @@ function ForumThread({ team, comments, onBack, onAddComment, onDeleteComment, cu
                   {comment.text}
                 </p>
 
-                {/* UPDATED AUTHORIZATION CHECK */}
                 {isOwner && (
                   <div style={{ textAlign: 'right' }}>
                     <button 
-                      onClick={() => onDeleteComment(comment.id || comment._id)}
+                      onClick={() => onDeleteComment(comment._id || comment.id)}
                       style={{
                         backgroundColor: '#ff4444',
                         color: '#fff',
@@ -138,7 +159,7 @@ function ForumThread({ team, comments, onBack, onAddComment, onDeleteComment, cu
         <textarea
           value={newComment}
           onChange={(e) => setNewComment(e.target.value)}
-          placeholder={`What's on your mind, ${currentUser?.username || currentUser}?`}
+          placeholder={`What's on your mind, ${currentUserName}?`}
           style={{ 
             width: '100%', 
             minHeight: '120px', 
