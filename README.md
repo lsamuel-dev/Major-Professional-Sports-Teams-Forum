@@ -111,3 +111,11 @@ App State
 3. **Run the development server:** `npm run dev`
 
 4. **Deploy:** `npm run deploy`
+
+### Future Improvements
+
+* **Real-Time Data Integration**: Incorporate sports APIs to display live scores and player statistics directly within team threads.
+
+* **Role-Based Access Control**: Implement a "Verified Fan" system with unique permissions for reporters and community moderators.
+
+* **Engagement Engine**: Add Socket.io for real-time user mentions, push notifications, and instant activity alerts.
