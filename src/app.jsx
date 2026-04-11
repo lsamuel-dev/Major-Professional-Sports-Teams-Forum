@@ -1,16 +1,40 @@
-import Login from './components/Login/Login';
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import TeamList from './components/TeamList/TeamList';
 import ForumThread from './components/ForumThread/ForumThread';
+import Login from './components/Login/Login';
 
 function App() {
-  const [user, setUser] = useState(null);
   const [teams, setTeams] = useState([]);
   const [selectedTeam, setSelectedTeam] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [allComments, setAllComments] = useState({});
 
+  // 1. Initialize user from LocalStorage
+  const [user, setUser] = useState(() => {
+    return localStorage.getItem('forum_user') || null;
+  });
+
+  // 2. Initialize comments from LocalStorage
+  const [allComments, setAllComments] = useState(() => {
+    const saved = localStorage.getItem('forum_comments');
+    return saved ? JSON.parse(saved) : {};
+  });
+
+  // 3. PERSISTENCE: Save User whenever it changes
+  useEffect(() => {
+    if (user) {
+      localStorage.setItem('forum_user', user);
+    } else {
+      localStorage.removeItem('forum_user');
+    }
+  }, [user]);
+
+  // 4. PERSISTENCE: Save Comments whenever they change
+  useEffect(() => {
+    localStorage.setItem('forum_comments', JSON.stringify(allComments));
+  }, [allComments]);
+
+  // 5. FETCH TEAMS: Existing API Logic
   useEffect(() => {
     const fetchLeagues = async () => {
       setLoading(true);
@@ -78,23 +102,24 @@ function App() {
             justifyContent: 'space-between',
             alignItems: 'center'
           }}>
-            <div style={{ width: '100px' }}></div> {/* Spacer for centering */}
+            <div style={{ width: '100px' }}></div> {/* Spacer for layout balance */}
             <h1 style={{ margin: 0, letterSpacing: '2px', fontSize: '1.5rem' }}>
               MAJOR PROFESSIONAL SPORTS TEAMS FORUM
             </h1>
             <div className="user-controls" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-              <span style={{ fontWeight: 'bold' }}>User: {user}</span>
+              <span style={{ fontWeight: 'bold', textTransform: 'uppercase' }}>User: {user}</span>
               <button 
                 onClick={() => setUser(null)}
                 style={{
-                  padding: '5px 10px',
+                  padding: '5px 15px',
                   backgroundColor: '#000',
                   color: '#fff',
                   border: 'none',
-                  cursor: 'pointer'
+                  cursor: 'pointer',
+                  fontWeight: 'bold'
                 }}
               >
-                Logout
+                LOGOUT
               </button>
             </div>
           </header>
